@@ -1,0 +1,54 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+
+{% block vehicle_add_template %}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header py-2 text-capitalize d-flex justify-content-between align-items-center">
+                    <span>add vehicle</span>
+                    <div class="category_list_btn">
+                        <a href="{% url 'vehicle_manage' %}" class="btn btn-secondary d-flex align-items-center">
+                            <i class='bx bx-left-arrow-alt me-2'></i>
+                            <span>vehicle list</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" id='vehicleForm'>
+                        {% csrf_token %}
+                        <div class="mb-2">
+                            <label for="id_category_name">name</label>
+                            {{vehicleForm.vehicel_category}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_category_name">vehicle company</label>
+                            {{vehicleForm.vehicle_company_name}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_category_name">registration number</label>
+                            {{vehicleForm.registration_number}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_category_name">owner name</label>
+                            {{vehicleForm.owner_name}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_category_name">owner contact number</label>
+                            {{vehicleForm.owner_contact_number}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_category_name">vehicle in time</label>
+                            {{vehicleForm.vehicle_in_time}}
+                        </div>
+
+                        <button type="submit" class='btn btn-dark ms-auto d-block mt-3'>save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock vehicle_add_template %}

@@ -1,0 +1,128 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block dashboard_template %}
+
+<div class="container p-4" id='dashboard'>
+    <div class="row">
+        <div class="col-3">
+            <div class="dashboard_box d-flex flex-column text-center text-white py-4" style="background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(100,43,115,1) 0%, rgba(4,0,4,1) 90% );">
+                <div class="icon">
+                    <i class="fa-solid fa-car fs-1"></i>
+                </div>
+                <div class="info fw-bold text-capitalize my-1">
+                    <span>{{todayIncomingEntry}}</span>
+                    <p>today incoming vehicle entries</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="dashboard_box d-flex flex-column text-center text-white py-4" style="background-image: linear-gradient( 179deg,  rgba(0,0,0,1) 9.2%, rgba(127,16,16,1) 103.9% );">
+                <div class="icon">
+                    <i class="fa-solid fa-car fs-1"></i>
+                </div>
+                <div class="info fw-bold text-capitalize my-1">
+                    <span>{{todayOutgoingEntry}}</span>
+                    <p>today outgoing vehicle entries</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="dashboard_box d-flex flex-column text-center text-white" style="background-image: linear-gradient( 109.6deg,  rgba(103,30,117,1) 11.2%, rgba(252,76,2,1) 91.1% ); padding-block: 30px;">
+                <div class="icon">
+                    <i class="fa-solid fa-file fs-1"></i>
+                </div>
+                <div class="info fw-bold text-capitalize my-2">
+                    <span>{{vehicleCategory}}</span>
+                    <p>vehicle category</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="dashboard_box d-flex flex-column text-center text-white" style="background-image: linear-gradient( 89.4deg,  rgba(194,0,39,1) 0.8%, rgba(10,35,104,1) 99.4% ); padding-block: 30px;">
+                <div class="icon">
+                    <i class="fa-solid fa-car fs-1"></i>
+                </div>
+                <div class="info fw-bold text-capitalize text-white my-2">
+                    <span>{{totalIncomingVehicle}}</span>
+                    <p>total incoming vehicle</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-3" id='dashboard_table'>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header text-capitalize py-3">
+                    latest incoming vehicle
+                </div>
+                <div class="card-body">
+                    <div class="dashboard_users_table">
+                        <table class="table table-bordered text-capitalize border border-info" id='table_box'>
+                            <thead>
+                                <tr>
+                                    <th scope="col">s.no</th>
+                                    <th scope="col">parking number</th>
+                                    <th scope="col">owner name</th>
+                                    <th scope="col">vehicle reg number</th>
+                                    <th scope='col'>vehicle in time</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for vehicle_data in vehicleData %}
+                                <tr>
+                                    <th scope="row">{{vehicle_data.id}}</th>
+                                    <td>{{vehicle_data.parking_number}}</td>
+                                    <td>{{vehicle_data.owner_name}}</td>
+                                    <td>{{vehicle_data.registration_number}}</td>
+                                    <td>{{vehicle_data.vehicle_in_time}}</td>
+                                    <td class='fw-semibold'>{{vehicle_data.vehicle_status}}</td>
+                                    <td>
+                                        <div>
+                                            <a href="{% url 'view_vehicle' vehicle_data.id %}">
+                                                <i style="cursor: pointer;" class="fa-solid fa-eye ms-3"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% comment %} <div class="row mt-4">
+        <div class="col-12 justify-content-end d-flex">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item">
+                        {% if userData.has_previous %}
+                        <a class="page-link" href="?page={{ userData.previous_page_number }}">Previous</a>
+                        {% endif %}
+                    </li>
+                    <li class="page-item">
+                        {% if userData.paginator.num_pages %}
+                        <span class='page-link'>Page {{ userData.number }} of {{ userData.paginator.num_pages}}</span>
+                        {% endif %}
+                    </li>
+                    <li class="page-item">
+                        {% if userData.has_next %}
+                        <a class="page-link" href="?page={{ userData.next_page_number }}">Next</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div> {% endcomment %}
+</div>
+
+{% endblock dashboard_template %}

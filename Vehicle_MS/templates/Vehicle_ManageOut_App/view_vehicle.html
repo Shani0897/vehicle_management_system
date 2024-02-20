@@ -1,0 +1,79 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+{% block title %}View Outgoing Vehicle{% endblock title %}
+
+{% block view_vehicle_record_template %}
+<div class="container" id='view_vehicle'>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>view outgoing vehicle</span>
+                    <div class="category_list_btn">
+                        <a href="{% url 'vehicle_out_list' %}" class="btn btn-secondary d-flex align-items-center text-capitalize">
+                            <i class='bx bx-left-arrow-alt me-2'></i>
+                            <span>outgoing vehicle list</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+
+                        <tbody>
+                            <tr>
+                                <th>parking number</th>
+                                <td>
+                                    {{outVehicleRecord.parking_number}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th >vehicle category</th>
+                                <td>{{outVehicleRecord.vehicel_category}}</td>
+                            </tr>
+                            <tr>
+                                <th >vehicle company name</th>
+                                <td>{{outVehicleRecord.vehicle_company_name}}</td>
+                            </tr>
+                            <tr>
+                                <th >vehicle registration number</th>
+                                <td>{{outVehicleRecord.registration_number}}</td>
+                            </tr>
+                            <tr>
+                                <th >owner name</th>
+                                <td>{{outVehicleRecord.owner_name}}</td>
+                            </tr>
+                            <tr>
+                                <th >in time</th>
+                                <td>
+                                    {{outVehicleRecord.vehicle_in_time}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th >out time</th>
+                                <td>
+                                    {{outVehicleRecord.vehicle_time_out}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th >parking charges</th>
+                                <td class='d-flex'>
+                                    <div id='parking_charge'></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th >status</th>
+                                <td>{{outVehicleRecord.vehicle_status}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('parking_charge').innerText = '$' + 0;
+</script>
+{% endblock view_vehicle_record_template %}

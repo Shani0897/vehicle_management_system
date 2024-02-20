@@ -1,0 +1,121 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+{% block profile_template %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    edit profile
+                </div>
+                <form action="" method="post" id='profile_form'>
+                    {% csrf_token %}
+
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label for="">user name</label>
+                            {{profileForm.username}}
+                            <span id='username_error'></span>
+                        </div>
+                        <div class="mb-2">
+                            <label for="">first name</label>
+                            {{profileForm.first_name}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="">last name</label>
+                            {{profileForm.last_name}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="">email</label>
+                            {{profileForm.email}}
+                            <span id='email_error'></span>
+                        </div>
+                        <div class="mb-2">
+                            <label for="">password</label>
+                            {{profileForm.password1}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="">password confirmation</label>
+                            {{profileForm.password2}}
+                            <span id='password_error'></span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type='submit' class="btn btn-dark ms-auto d-block">update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let sign_password_one = document.getElementById('id_password1');
+    let sign_password_two = document.getElementById('id_password2');
+    sign_password_one.setAttribute('class', 'form-control');
+    sign_password_two.setAttribute('class', 'form-control');
+
+
+    let profile_form = document.getElementById('profile_form');
+
+    profile_form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+
+        fetch('/profile/', {
+            method: 'POST',
+            body: new FormData(profile_form)
+        })
+        .then(response => response.json())
+        .then(data =>{
+            if (data.success) {
+                console.log(data);
+                swal({
+                    icon: 'success',
+                    text: data.success,
+                    buttons: false,
+                    timer: 1600,
+                    closeOnClickOutside: false,
+                    className: 'swal-add-modal'
+                });
+                profile_form.reset();
+                document.getElementById('email_error').innerText = '';
+                document.getElementById('password_error').innerText = '';
+                setTimeout(() => {
+                    window.location.href = data.redirect_url;
+                }, 1600);
+    
+            } else {
+                console.log(data.errors)
+                let error_obj = JSON.parse(data.errors);
+                for (let field in error_obj) {
+                    let messages = error_obj[field];
+                    messages.forEach((messageObj) => {
+                        //console.log(messageObj.message)
+
+                        if (field === 'username') {
+                            document.getElementById('username_error').innerText = messageObj.message;
+                        } else {
+                            document.getElementById('username_error').innerText = '';
+                        }
+                        if (field === 'email') {
+                            document.getElementById('email_error').innerText = messageObj.message;
+                        } else {
+                            document.getElementById('email_error').innerText = '';
+                        }
+
+                        if (field === 'password2') {
+                            document.getElementById('password_error').innerText = messageObj.message;
+                        } else {
+                            document.getElementById('password_error').innerText = '';
+                        }
+                    });
+                }
+            }
+        })
+        .catch(errors =>{
+            console.log(errors)
+        })
+    })
+</script>
+{% endblock profile_template %}

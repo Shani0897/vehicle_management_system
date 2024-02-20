@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'CSS/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+    <script src="{% static 'JS/moment.js' %}"></script>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="logo-details">
+            <i class='bx bxl-vimeo logo_icon'></i>
+            <h6 class="logo_name">vehicle parking</h6>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <a href="{% url 'dashboard' %}">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="links_name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a href="{% url 'category' %}">
+                    <i class='bx bxs-category-alt'></i>
+                    <span class="links_name">vehicle category</span>
+                </a>
+                <span class="tooltip">vehicle category</span>
+            </li>
+            <li>
+                <a href="{% url 'vehicle_manage' %}">
+                    <i class='bx bx-log-in'></i>
+                    <span class="links_name">manage in vehicle</span>
+                </a>
+                <span class="tooltip">manage in vehicle</span>
+            </li>
+            <li>
+                <a href="{% url 'vehicle_out_list' %}">
+                    <i class='bx bx-log-out-circle'></i>
+                    <span class="links_name">manage out vehicle</span>
+                </a>
+                <span class="tooltip">manage out vehicle</span>
+            </li>
+            <li>
+                <a href="{% url 'report' %}">
+                    <i class='bx bxs-file-blank'></i>
+                    <span class="links_name">reports</span>
+                </a>
+                <span class="tooltip">reports</span>
+            </li>
+        </ul>
+    </div>
+
+    <section class="section">
+        <div id="nav_box">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <i class='bx bx-menu ' id="btn" onclick='offcanvas()'></i>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto me-3 mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle me-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      hi, {{user.first_name}} boy
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                      <li><a class="dropdown-item" href="{% url 'profile' %}">my profile</a></li>
+                                      <li><a class="dropdown-item" href="{% url 'logout_page' %}">logout</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        {% comment %} DASHBOARD________________TEMPLATE_________________START {% endcomment %}
+
+        {% block dashboard_template %}{% endblock dashboard_template %}
+
+        {% comment %} PROFILE__________________________TEMPLATE__________________START {% endcomment %}
+
+        {% block profile_template %}{% endblock profile_template %}
+
+        {% comment %} CATEGORY______________TEMPLATE_____________START {% endcomment %}
+
+        {% block category_template %}{% endblock category_template %}
+        {% block add_category_template %}{% endblock add_category_template %}
+        {% block edit_category_template %}{% endblock edit_category_template %}
+
+        {% comment %} MANAGE________IN__________VEHICLE__________TEMPLATE____________START {% endcomment %}
+
+        {% block vehicle_manage_list_template %}{% endblock vehicle_manage_list_template %}
+        {% block vehicle_add_template %}{% endblock vehicle_add_template %}
+        {% block vehicle_view_template %}{% endblock vehicle_view_template %}
+
+        {% comment %} MANAGE________OUT__________VEHICLE__________TEMPLATE____________START {% endcomment %}
+
+        {% block vehicle_manage_out_list_template %}{% endblock vehicle_manage_out_list_template %}
+        {% block view_vehicle_record_template %}{% endblock view_vehicle_record_template %}
+
+        {% comment %} REPORTS_________________TEMPLATE________________________START {% endcomment %}
+
+        {% block reports_template %}{% endblock reports_template %}
+    </section>
+
+
+
+    <script src="https://kit.fontawesome.com/1e203308bd.js" crossorigin="anonymous"></script>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.16/jspdf.plugin.autotable.min.js"></script>
+    <script src="{% static 'JS/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'JS/jquery.js' %}"></script>
+    <script src="{% static 'JS/vehicle.js' %}"></script>
+</body>
+
+</html>

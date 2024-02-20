@@ -1,0 +1,129 @@
+{% extends 'LoginApp/base.html' %}
+{% load static %}
+
+
+{% block login_page_section %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="loader">
+                <div class="dot"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container login_div">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-6">
+            <div class="card me-4">
+                <div class="card-header text-center text-capitalize p-3">
+                    <h3> vehicle parking </h3>
+                </div>
+                <form action="" method="post" id='loginform'>
+                    {% csrf_token %}
+
+                    <div class="card-body">
+                        {{loginForm}}
+                    </div>
+                    <div class="card-footer d-grid">
+                        <button class='btn btn-danger' type="submit">login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-8 mt-4 text-center signup_btn">
+            <a href="{% url 'signpage' %}" class='text-decoration-none'>signUp page<i class="fa-solid fa-caret-right fa-beat-fade"></i></a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+
+            <div class="toast-container position-fixed top-0 end-0 p-3">
+                <div id="liveToast" class="toast text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+                    
+                    <div class="toast-body">
+                        <p id='show_msg'></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let username = document.getElementById('id_username');
+    let password = document.getElementById('id_password');
+    username.setAttribute('class', 'form-control mb-3');
+    password.setAttribute('class', 'form-control');
+
+
+    const toast_function = () => {
+
+        const toastLiveExample = document.getElementById('liveToast')
+    
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        toastBootstrap.show();
+    }
+    
+    
+    let pre_loader = (toggle) => {
+        document.querySelector('.loader').style.display = toggle;
+    }
+    
+    
+    let loginFunction = () => {
+    
+        let loginForm = document.getElementById('loginform');
+        loginForm.addEventListener('submit', (e) => {
+    
+            e.preventDefault();
+    
+    
+            fetch('', {
+                method: 'POST',
+                body: new FormData(loginForm)
+            })
+                .then(response => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        pre_loader('block');
+                        let success_msg = document.getElementById('show_msg');
+                        success_msg.innerText = 'successfully login';
+                        toast_function();
+                        setTimeout(() => {
+                            pre_loader('none');
+                            window.location.href = data.redirect_url;
+                        }, 3400);
+                        console.log('success')
+                    } else {
+                        // Display error message to user
+                        pre_loader('block');
+                        setTimeout(() => {
+                            pre_loader('none');
+                        }, 3400);
+                        let user_auth_error = JSON.parse(data.errors)
+                        for (const field in user_auth_error) {
+                            let messages = user_auth_error[field];
+                            console.log(messages)
+                            messages.forEach((msgObj) => {
+                                console.log(msgObj.message)
+                                let error_msg = document.getElementById('show_msg');
+                                error_msg.innerText = msgObj.message;
+                                toast_function();
+                            })
+                        }
+                        console.log(user_auth_error)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        })
+    }
+    
+    loginFunction();
+</script>
+{% endblock login_page_section %}

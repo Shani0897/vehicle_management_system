@@ -1,0 +1,132 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+
+{% block vehicle_view_template %}
+<div class="container" id='view_vehicle'>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header text-capitalize d-flex justify-content-between align-items-center">
+                    <span>
+                        view vehicle
+                    </span>
+                    <div class="category_list_btn">
+                        <a href="{% url 'vehicle_manage' %}" class="btn btn-secondary d-flex align-items-center">
+                            <i class='bx bx-left-arrow-alt me-2'></i>
+                            <span style="letter-spacing: 1px">vehicle list</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+
+                        <tbody>
+                            <tr>
+                                <th><span>parking number</span></th>
+                                <td>
+                                    {{vehicleRecord.parking_number}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>vehicle category</th>
+                                <td>{{vehicleRecord.vehicel_category}}</td>
+                            </tr>
+                            <tr>
+                                <th>vehicle company name</th>
+                                <td>{{vehicleRecord.vehicle_company_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>vehicle registration number</th>
+                                <td>{{vehicleRecord.registration_number}}</td>
+                            </tr>
+                            <tr>
+                                <th>owner name</th>
+                                <td>{{vehicleRecord.owner_name}}</td>
+                            </tr>
+                            <tr>
+                                <th>in time</th>
+                                <td>
+                                    <input id='in_time' type="hidden" value="{{vehicleRecord.vehicle_in_time}}">
+                                    {{vehicleRecord.vehicle_in_time}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>parking charges</th>
+                                <td class='d-flex'>
+                                    <input type="hidden" id="currency_format" value="$">
+                                    <input type="hidden" id='charges' value="{{vehicleRecord.vehicel_category.parking_charges_per_hour}}">
+                                    <div id='parking_charge'>{{vehicleRecord.vehicel_category.parking_charges_per_hour}}</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>status</th>
+                                <td>{{vehicleRecord.vehicle_status}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-dark mt-2 d-block ms-auto" data-bs-toggle="modal" data-bs-target="#vehicle_modal">update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+
+            <!-- Modal -->
+            <div class="modal fade" data-bs-backdrop="static" id="vehicle_modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1>view vehicle</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form action="" method="post" id='vehicleForm'>
+                            {% csrf_token %}
+
+                            <div class="modal-body">
+
+                                {{vehicleForm}}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" style="background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(147,67,67,1) 0%, rgba(111,27,27,1) 90% );" class="btn btn-secondary mx-3" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" style="background-image: radial-gradient( circle 610px at 5.2% 51.6%,  rgba(5,8,114,1) 0%, rgba(7,3,53,1) 97.5% );" class="btn btn-primary" data-bs-dismiss="modal">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var parking_charges = document.getElementById('charges').value;
+    var currency_format = document.getElementById('currency_format').value;
+    console.log(typeof Number(parking_charges))
+    var dateOne = document.getElementById('in_time').value;
+    const originalDatetime = dateOne;
+    const parsedDatetime = moment(originalDatetime, "MMMM DD, YYYY, h:mm a").toDate();
+    const isoDatetime = parsedDatetime.toISOString();
+    const formattedDatetime = isoDatetime.replace("T", " ").slice(0, -5);
+    const dateOneObj = new Date(formattedDatetime);
+    console.log('date one obj ' + formattedDatetime)
+    var dateTwoObj = new Date();
+    var diff = (dateTwoObj - dateOneObj) / 1000;
+    diff /= (60 * 60);
+    var hours = Math.abs(Math.ceil(diff));
+    console.log(diff);
+    var charge = parseInt(hours) * Number(parking_charges);
+    document.getElementById('parking_charge').innerHTML = currency_format + charge;
+
+    //GET THE CURRENT PARKING CHARGE VALUE AND SET THE MODEL PARKING INPUT FIELD VALUE
+
+    let current_parkCharge_value = document.getElementById('parking_charge').textContent;
+    console.log('current value ' + current_parkCharge_value);
+    document.getElementById('id_parking_charges').value = current_parkCharge_value;
+
+</script>
+{% endblock vehicle_view_template %}

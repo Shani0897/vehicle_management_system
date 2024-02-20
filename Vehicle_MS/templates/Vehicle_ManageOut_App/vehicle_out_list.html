@@ -1,0 +1,94 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+{% block title %}Outgoing Vehicle{% endblock title %}
+
+{% block vehicle_manage_out_list_template %}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header text-capitalize d-flex justify-content-between align-items-center">
+                    <span>manage outgoing vehicle list</span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex mt-2 justify-content-between align-items-center">
+                        <div class="button">
+                            <button class="btn btn-dark text-capitalize" onclick="generatePdf('table_vehicle_pdf')"> <span class='text-uppercase'>pdf</span> print</button>
+                        </div>
+                        <div class="search_box text-capitalize d-flex align-items-center">
+                            <label for="search-input">search:</label>
+                            <input type="search" class="form-control ms-3" id="search-outVehicle-input">
+                        </div>
+                    </div>
+                    <div class='table_box mt-4'>
+                        <table class="table table-bordered border border-info" id='table_vehicle_pdf'>
+                            <thead>
+                                <tr class='text-capitalize'>
+                                    <th scope="col">s.no</th>
+                                    <th scope="col">parking number</th>
+                                    <th scope="col">owner name</th>
+                                    <th scope="col">vehicle reg number</th>
+                                    <th scope="col">vehicle out time</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in vehicle_OutList_Data %}
+                                <tr id="item-{{data.id}}">
+                                    <th scope="row" id='id_{{data.id}}' data-id={{data.id}}>{{data.id}}</th>
+                                    <td>{{data.parking_number}}</td>
+                                    <td>{{data.owner_name}}</td>
+                                    <td>{{data.registration_number}}</td>
+                                    <td>{{data.vehicle_time_out}}</td>
+                                    <td><span class='highlight'>{{data.vehicle_status}}</span></td>
+                                    <td>
+                                        <ul class='list-unstyled d-flex align-items-center'>
+                                            <li>
+                                                <a href="{% url 'view_vehicle_record' data.id %}"><i style="cursor: pointer;" class="fa-solid fa-eye ms-3"></i></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination_box d-flex align-items-center justify-content-between mt-4">
+                        <div class="pagination justify-content-end order-1">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        {% if vehicle_OutList_Data.has_previous %}
+                                        <a class="page-link"
+                                            href="?page={{vehicle_OutList_Data.previous_page_number}}">Previous</a>
+                                        {% endif %}
+                                    </li>
+                                    <li class="page-item">
+                                        {% if vehicle_OutList_Data.paginator.num_pages %}
+                                        <span class='page-link'>Page {{ vehicle_OutList_Data.number }} of {{ vehicle_OutList_Data.paginator.num_pages }}</span>
+                                        {% endif %}
+
+                                    </li>
+                                    <li class="page-item">
+                                        {% if vehicle_OutList_Data.has_next %}
+                                        <a class="page-link" href="?page={{vehicle_OutList_Data.next_page_number}}">Next</a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="record_showing">
+                            <span class='text-capitalize'>
+                                showing {{records.start_index}} to {{records.end_index}} of
+                                {{records.paginator.count}} entries
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock vehicle_manage_out_list_template %}

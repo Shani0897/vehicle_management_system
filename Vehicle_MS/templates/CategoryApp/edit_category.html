@@ -1,0 +1,43 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+
+{% block edit_category_template %}
+<div class="container" id='category_edit'>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header text-capitalize py-2 d-flex justify-content-between align-items-center">
+                    <span>update vehicle category</span>
+                    <div class="category_list_btn">
+                        <a href="{% url 'category' %}" class="btn btn-secondary d-flex align-items-center">
+                            <i class='bx bx-left-arrow-alt me-2'></i>
+                            <span>vehicle category list</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" id='category-edit-form'>
+                        {% csrf_token %}
+                        
+                        <div class="mb-2">
+                            <label for="id_category_name">name</label>
+                            {{editForm.category_name}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_parking_charges_per_hour">parking charges per hour</label>
+                            {{editForm.parking_charges_per_hour}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_category_status">status</label>
+                            {{editForm.category_status}}
+                        </div>
+
+                        <button type="submit" class='btn btn-dark text-capitalize ms-auto d-block mt-3'>save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock edit_category_template %}

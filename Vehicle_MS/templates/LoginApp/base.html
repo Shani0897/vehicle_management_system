@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'CSS/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
+</head>
+
+<body>
+
+    <section id='main-content'>
+        {% comment %} LOGIN____________PAGE {% endcomment %}
+
+        {% block login_page_section %}{% endblock login_page_section %}
+
+        {% comment %} SINGN__________UP_________________PAGE {% endcomment %}
+
+        {% block signUp_page_section %}{% endblock signUp_page_section %}
+    </section>
+
+
+    
+    <script src="{% static 'JS/bootstrap.bundle.js' %}"></script>
+    <script src="https://kit.fontawesome.com/1e203308bd.js" crossorigin="anonymous"></script>
+    <script src="{% static 'JS/jquery.js' %}"></script>
+    <script src="{% static 'JS/vehicle.js' %}"></script>
+</body>
+
+</html>

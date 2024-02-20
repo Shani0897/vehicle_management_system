@@ -1,0 +1,150 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+{% block title %}Reports{% endblock title %}
+
+{% block reports_template %}
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-12">
+            <div class="card mb-3">
+                <div class="card-header fw-bold text-capitalize fs-4">
+                    reports
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" id='form-search'>
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="">from date</label>
+                                <input type="datetime-local" name="from_date" class="form-control border border-info">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="">to date</label>
+                                <input type="datetime-local" name="to_date" class="form-control border border-info">
+                            </div>
+                            <div class="col-4 mb-3">
+                                <label for="">type</label>
+                                <select name="select_type" onchange="selectType()" id='select_option_type' class="form-select border border-info">
+                                    <option value="all">all records</option>
+                                    <option value="incoming_vehicle">incoming vehicle</option>
+                                    <option value="outgoing_vehicle">outgoing vehicle</option>
+                                    <option value="vehicle_number">search vehicle number</option>
+                                    <option value="user_name">search username</option>
+                                    <option value="phone_number">search phone number</option>
+                                </select>
+                            </div>
+                            <div class="col-4 vehicle_number" style="display: none;">
+                                <label for="">vehicle number</label>
+                                <input type="text" name="vehicle_reg_number" placeholder="enter vehicle number" class="form-control">
+                            </div>
+                            <div class="col-4 phone_number" style="display: none;">
+                                <label for="">phone number</label>
+                                <input type="tel" name="contact_number" placeholder="enter phone number" class="form-control border border-info">
+                            </div>
+                            <div class="col-4 user_name" style="display: none;">
+                                <label for="">user name</label>
+                                <input type="text" name="owner_name" placeholder="enter username" class="form-control border border-info">
+                            </div>
+                            <div class="col-12">
+                                <button class='btn btn-primary' type="submit">submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container table_search_box">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-between">
+                        <div class="col-6">
+                            <button onclick="generatePdf('report_table')" class="btn btn-dark">print pdf</button>
+                        </div>
+                        {% comment %} <div class="col-4 d-flex align-items-center">
+                            <label for="" class='form-label me-3 text-capitalize'>search</label>
+                            <input type="search" id='search_page_item' name="" class="form-control border border-info">
+                        </div> {% endcomment %}
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-12" id='output'>
+                            <table class="table border border-info table_box table-bordered text-capitalize" id='report_table'>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">parking number</th>
+                                        <th scope="col">owner name</th>
+                                        <th scope="col">vehicle reg number</th>
+                                        <th scope='col'>vehicle datetime</th>
+                                        <th scope="col">status</th>
+                                        <th scope="col">parking charges ($)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id='tableBody'>
+                                    
+                                </tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>total sum</td>
+                                    <td>0</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let selectType = () => {
+
+        let select_box = document.getElementById('select_option_type');
+        let selectedValue = select_box.options[select_box.selectedIndex].value;
+        /* console.log(selectedValue) */
+
+        let selectedOption = selectedValue == 'all' || selectedValue == 'incoming_vehicle' || selectedValue == 'outgoing_vehicle';
+    
+        if (selectedOption) {
+    
+            document.querySelector('.vehicle_number').style.display = 'none';
+            document.querySelector('.phone_number').style.display = 'none';
+            document.querySelector('.user_name').style.display = 'none';
+    
+        }else if (selectedValue == 'vehicle_number') {
+            document.querySelector('.vehicle_number').style.display = 'block';
+            document.querySelector('.phone_number').style.display = 'none';
+            document.querySelector('.user_name').style.display = 'none';
+    
+        } else if (selectedValue == 'user_name') {
+    
+            document.querySelector('.user_name').style.display = 'block';
+            document.querySelector('.vehicle_number').style.display = 'none';
+            document.querySelector('.phone_number').style.display = 'none';
+        }else if (selectedValue == 'phone_number') {
+            document.querySelector('.phone_number').style.display = 'block';
+            document.querySelector('.user_name').style.display = 'none';
+            document.querySelector('.vehicle_number').style.display = 'none';
+        }else{
+            document.querySelector('.phone_number').style.display = 'none';
+            document.querySelector('.user_name').style.display = 'none';
+            document.querySelector('.vehicle_number').style.display = 'none';
+        }
+    };
+
+    selectType();
+   
+    
+    
+    
+</script>
+{% endblock reports_template %}

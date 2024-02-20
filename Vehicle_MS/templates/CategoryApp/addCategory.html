@@ -1,0 +1,45 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+{% block title %}Add Category{% endblock title %}
+
+
+{% block add_category_template %}
+
+<div class="container" id='category_add'>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header text-capitalize py-2 d-flex justify-content-between align-items-center">
+                    <span>add vehicle category</span>
+                    <div class="category_list_btn">
+                        <a href="{% url 'category' %}" class="btn btn-secondary d-flex align-items-center">
+                            <i class='bx bx-left-arrow-alt me-2'></i>
+                            <span>vehicle category list</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" id='addCategoryForm'>
+                        {% csrf_token %}
+                        <div class="mb-2">
+                            <label for="id_category_name">name</label>
+                            {{addCategoryForm.category_name}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_category_name">parking charges per hour</label>
+                            {{addCategoryForm.parking_charges_per_hour}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="id_category_name">status</label>
+                            {{addCategoryForm.category_status}}
+                        </div>
+
+                        <button type="submit" class='btn btn-dark text-capitalize ms-auto d-block mt-3'>save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock add_category_template %}

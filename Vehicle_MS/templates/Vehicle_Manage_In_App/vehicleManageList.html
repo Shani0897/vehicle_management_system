@@ -1,0 +1,103 @@
+{% extends 'BaseTemplate/index.html' %}
+{% load static %}
+
+{% block title %}Vehicle Parking{% endblock title %}
+
+{% block vehicle_manage_list_template %}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header text-capitalize py-2 d-flex justify-content-between align-items-center">
+                    <span>vehicle list</span>
+                    <div class="add_new_category">
+                        <a href="{% url 'add_vehicle' %}" class="btn btn-dark">add new vehicle</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div class="button">
+                            <button class="btn btn-dark text-capitalize" onclick="generatePdf('table_vehicle_pdf')"><span class='text-uppercase'>pdf</span> print</button>
+                        </div>
+                        <div class="search_box d-flex align-items-center text-capitalize">
+                            <label for="search-input">search:</label>
+                            <input type="search" class="form-control ms-3" id="search-vehicle-input">
+                        </div>
+                    </div>
+                    <div class='table_box mt-4'>
+                        <table class="table table-bordered border border-info" id='table_vehicle_pdf'>
+                            <thead>
+                                <tr class='text-capitalize'>
+                                    <th scope="col">s.no</th>
+                                    <th scope="col">parking number</th>
+                                    <th scope="col">owner name</th>
+                                    <th scope="col">vehicle reg number</th>
+                                    <th scope="col">vehicle in time</th>
+                                    <th scope="col">status</th>
+                                    <th scope="col">action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if vehicleData %}
+                                {% for data in vehicleData %}
+                                <tr id="item-{{data.id}}">
+                                    <th scope="row" id='id_{{data.id}}' data-id={{data.id}}>{{data.id}}</th>
+                                    <td>{{data.parking_number}}</td>
+                                    <td>{{data.owner_name}}</td>
+                                    <td>{{data.registration_number}}</td>
+                                    <td>{{data.vehicle_in_time}}</td>
+                                    <td><span class='highlight'>{{data.vehicle_status}}<span></td>
+                                    <td>
+                                        <ul class='list-unstyled d-flex align-items-center'>
+                                            <li>
+                                                <a href="{% url 'view_vehicle' data.id %}"><i style="cursor: pointer;" class="fa-solid fa-eye ms-3"></i></a>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr class='text-center'>
+                                    <td colspan='5'>no data available in table</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination_box d-flex justify-content-between align-items-center mt-4">
+                        <div class="pagination justify-content-end order-1">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        {% if vehicleData.has_previous %}
+                                        <a class="page-link"
+                                            href="?page={{vehicleData.previous_page_number}}">Previous</a>
+                                        {% endif %}
+                                    </li>
+                                    <li class="page-item">
+                                        {% if vehicleData.paginator.num_pages %}
+                                        <span class='page-link'>Page {{ vehicleData.number }} of {{ vehicleData.paginator.num_pages }}</span>
+                                        {% endif %}
+
+                                    </li>
+                                    <li class="page-item">
+                                        {% if vehicleData.has_next %}
+                                        <a class="page-link" href="?page={{vehicleData.next_page_number}}">Next</a>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="record_showing">
+                            <span class='text-capitalize'>
+                                showing {{records.start_index}} to {{records.end_index}} of
+                                {{records.paginator.count}} entries
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock vehicle_manage_list_template %}

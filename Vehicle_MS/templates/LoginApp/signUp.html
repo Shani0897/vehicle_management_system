@@ -1,0 +1,155 @@
+{% extends 'LoginApp/base.html' %}
+{% load static %}
+
+
+{% block title %}SignUp{% endblock title %}
+
+{% block signUp_page_section %}
+<div class="container back_login">
+    <div class="row mt-4">
+        <div class="col-3">
+            <a href="{% url 'login_page' %}"><i class="fa-solid fa-caret-left fa-beat-fade"></i>login page</a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="modal fade" id="success_modal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <i class="fa-solid fa-check fa-beat-fade"></i>
+                            <p class='text-capitalize'>
+                                successfull!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container sign_up_div">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-6">
+            <div class="card" style="width: 34rem;">
+                <div class="card-header text-capitalize text-center p-3">
+                    <h3>vehicle parking</h3>
+                </div>
+
+                <form action="" method="post" id='mySignUpForm'>
+                    {% csrf_token %}
+
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label for="">user name</label>
+                            {{signUp_Form.username}}
+                            <span id='username_error'></span>
+                        </div>
+                        <div class="mb-2">
+                            <label for="">first name</label>
+                            {{signUp_Form.first_name}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="">last name</label>
+                            {{signUp_Form.last_name}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="">email</label>
+                            {{signUp_Form.email}}
+                            <span id='email_error'></span>
+                        </div>
+                        <div class="mb-2">
+                            <label for="">password</label>
+                            {{signUp_Form.password1}}
+                        </div>
+                        <div class="mb-2">
+                            <label for="">password confirmation</label>
+                            {{signUp_Form.password2}}
+                            <span id='password_error'></span>
+                        </div>
+                    </div>
+                    <div class="card-footer d-grid text-center">
+                        <button type='submit' class="btn btn-primary text-capitalize">submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let sign_password_one = document.getElementById('id_password1');
+    let sign_password_two = document.getElementById('id_password2');
+    sign_password_one.setAttribute('class', 'form-control');
+    sign_password_two.setAttribute('class', 'form-control');
+
+    let load_modal = () => {
+        const myModalAlternative = new bootstrap.Modal('#success_modal', {
+            backdrop: true
+        });
+        myModalAlternative.show();
+    }
+
+    let user_sign_up_function = () => {
+
+        let form = document.getElementById('mySignUpForm');
+        form.addEventListener('submit', (e) => {
+    
+            e.preventDefault();
+    
+            fetch('/signpage/', {
+                method: 'POST',
+                body: new FormData(form)
+            })
+                .then(response => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        form.reset();
+                        document.getElementById('email_error').innerText = '';
+                        document.getElementById('password_error').innerText = '';
+                        load_modal();
+                        setTimeout(() => {
+                            const modal = document.getElementById("success_modal");
+                            const modalInstance = bootstrap.Modal.getInstance(modal);
+                            modalInstance.hide();
+                        }, 3000);
+                        console.log('success: ', data)
+                    } else {
+    
+                        //console.log(data)
+                        let error_obj = JSON.parse(data.errors);
+                        for (let field in error_obj) {
+                            let messages = error_obj[field];
+                            messages.forEach((messageObj) => {
+                                //console.log(messageObj.message)
+    
+                                if (field === 'username') {
+                                    document.getElementById('username_error').innerText = messageObj.message;
+                                } else {
+                                    document.getElementById('username_error').innerText = '';
+                                }
+                                if (field === 'email') {
+                                    document.getElementById('email_error').innerText = messageObj.message;
+                                } else {
+                                    document.getElementById('email_error').innerText = '';
+                                }
+    
+                                if (field === 'password2') {
+                                    document.getElementById('password_error').innerText = messageObj.message;
+                                } else {
+                                    document.getElementById('password_error').innerText = '';
+                                }
+                            });
+                        }
+    
+                    }
+                })
+                .catch((error) => console.log(error))
+        });
+    }
+    
+    user_sign_up_function();
+</script>
+{% endblock signUp_page_section %}
